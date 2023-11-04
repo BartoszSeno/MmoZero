@@ -13,12 +13,21 @@ interface MovingDivState {
   left: number;
   keysPressed: Set<string>;
   walls: WallData[];
+  imageWidth: number;
+  imageHeight: number;
 }
 
 class MovingDiv extends Component<{}, MovingDivState> {
   interval: NodeJS.Timer | undefined;
   containerRef: React.RefObject<HTMLDivElement>;
 
+  // fast accest to modivy the world
+  //============================================
+  MovmentSpeed = 10;
+
+  MainMapImage =
+    "https://raw.githubusercontent.com/BartoszSeno/ClickerZero/main/src/assets/MainImg/Pond/pond.gif";
+  //============================================
   constructor(props: {}) {
     super(props);
     this.state = {
@@ -32,6 +41,8 @@ class MovingDiv extends Component<{}, MovingDivState> {
 
         // Dodaj inne ściany według potrzeb
       ],
+      imageWidth: 0,
+      imageHeight: 0,
     };
     this.containerRef = React.createRef();
   }
@@ -40,8 +51,8 @@ class MovingDiv extends Component<{}, MovingDivState> {
     window.addEventListener("keydown", this.handleKeyDown);
     window.addEventListener("keyup", this.handleKeyUp);
     this.startMoving();
-    this.startMoving();
     this.loadPositionFromLocalStorage();
+    this.componentDidMountImage();
   }
 
   componentWillUnmount() {
@@ -85,7 +96,7 @@ class MovingDiv extends Component<{}, MovingDivState> {
   }
 
   moveDiv = () => {
-    const speed = 1; // Prędkość poruszania DIVa
+    const speed = this.MovmentSpeed; // Prędkość poruszania DIVa
     const { keysPressed, top, left, walls } = this.state;
     let newTop = top;
     let newLeft = left;
@@ -172,14 +183,26 @@ class MovingDiv extends Component<{}, MovingDivState> {
     });
   };
 
+  componentDidMountImage() {
+    const image = new Image();
+    image.src = this.MainMapImage;
+    image.onload = () => {
+      const imageWidth = image.width;
+      const imageHeight = image.height;
+      this.setState({ imageWidth, imageHeight });
+    };
+  }
+
   render() {
-    const { top, left, walls } = this.state;
+    const { top, left, walls, imageWidth, imageHeight } = this.state;
 
     const containerStyle: React.CSSProperties = {
-      width: "400px",
-      height: "400px",
+      width: imageWidth + "px",
+      height: imageHeight + "px",
       position: "relative",
       border: "1px solid black",
+      backgroundImage: `url(${this.MainMapImage})`,
+      backgroundSize: "cover",
     };
 
     return (
