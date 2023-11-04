@@ -15,6 +15,8 @@ interface MovingDivState {
   walls: WallData[];
   imageWidth: number;
   imageHeight: number;
+  imageWidthCharacter: number;
+  imageHeightCharacter: number;
 }
 
 class MovingDiv extends Component<{}, MovingDivState> {
@@ -26,7 +28,11 @@ class MovingDiv extends Component<{}, MovingDivState> {
   MovmentSpeed = 10;
 
   MainMapImage =
-    "https://raw.githubusercontent.com/BartoszSeno/ClickerZero/main/src/assets/MainImg/Pond/pond.gif";
+    "https://raw.githubusercontent.com/BartoszSeno/ClickerZero/main/src/assets/MainImg/MainBg2.png";
+
+  MainCharacter =
+    "https://raw.githubusercontent.com/BartoszSeno/ClickerZero/main/src/assets/MainImg/Characters/Joanna.gif";
+
   //============================================
   constructor(props: {}) {
     super(props);
@@ -43,6 +49,8 @@ class MovingDiv extends Component<{}, MovingDivState> {
       ],
       imageWidth: 0,
       imageHeight: 0,
+      imageWidthCharacter: 0,
+      imageHeightCharacter: 0,
     };
     this.containerRef = React.createRef();
   }
@@ -53,6 +61,7 @@ class MovingDiv extends Component<{}, MovingDivState> {
     this.startMoving();
     this.loadPositionFromLocalStorage();
     this.componentDidMountImage();
+    this.componentDidMountImageCharacter();
   }
 
   componentWillUnmount() {
@@ -97,7 +106,14 @@ class MovingDiv extends Component<{}, MovingDivState> {
 
   moveDiv = () => {
     const speed = this.MovmentSpeed; // Prędkość poruszania DIVa
-    const { keysPressed, top, left, walls } = this.state;
+    const {
+      keysPressed,
+      top,
+      left,
+      walls,
+      imageWidthCharacter,
+      imageHeightCharacter,
+    } = this.state;
     let newTop = top;
     let newLeft = left;
 
@@ -117,8 +133,8 @@ class MovingDiv extends Component<{}, MovingDivState> {
     // Sprawdzanie granic kontenera
     const containerWidth = this.containerRef.current?.offsetWidth || 400;
     const containerHeight = this.containerRef.current?.offsetHeight || 400;
-    const divWidth = 50;
-    const divHeight = 50;
+    const divWidth = imageWidthCharacter;
+    const divHeight = imageHeightCharacter;
 
     if (newLeft < 0) {
       newLeft = 0;
@@ -193,8 +209,35 @@ class MovingDiv extends Component<{}, MovingDivState> {
     };
   }
 
+  componentDidMountImageCharacter() {
+    const image = new Image();
+    image.src = this.MainCharacter;
+    image.onload = () => {
+      const imageWidthCharacter = image.width;
+      const imageHeightCharacter = image.height;
+      this.setState({ imageWidthCharacter, imageHeightCharacter });
+    };
+  }
+
+  moveCamera = (dx: number, dy: number) => {
+    const { top, left } = this.state;
+    const newTop = top + dy;
+    const newLeft = left + dx;
+    this.setState({ top: newTop, left: newLeft }, () => {
+      this.savePositionToLocalStorage();
+    });
+  };
+
   render() {
-    const { top, left, walls, imageWidth, imageHeight } = this.state;
+    const {
+      top,
+      left,
+      walls,
+      imageWidth,
+      imageHeight,
+      imageWidthCharacter,
+      imageHeightCharacter,
+    } = this.state;
 
     const containerStyle: React.CSSProperties = {
       width: imageWidth + "px",
@@ -203,6 +246,7 @@ class MovingDiv extends Component<{}, MovingDivState> {
       border: "1px solid black",
       backgroundImage: `url(${this.MainMapImage})`,
       backgroundSize: "cover",
+      transform: `translate(${-left}px, ${-top}px)`,
     };
 
     return (
@@ -224,9 +268,11 @@ class MovingDiv extends Component<{}, MovingDivState> {
             top: `${top}px`,
             left: `${left}px`,
             position: "absolute",
-            width: "50px",
-            height: "50px",
+            width: `${imageWidthCharacter}px`,
+            height: `${imageHeightCharacter}px`,
             backgroundColor: "blue",
+            backgroundImage: `url(${this.MainCharacter})`,
+            backgroundPositionX: "-20px",
           }}
         ></div>
       </div>
