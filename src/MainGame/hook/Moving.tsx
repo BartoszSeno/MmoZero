@@ -106,14 +106,7 @@ class MovingDiv extends Component<{}, MovingDivState> {
 
   moveDiv = () => {
     const speed = this.MovmentSpeed; // Prędkość poruszania DIVa
-    const {
-      keysPressed,
-      top,
-      left,
-      walls,
-      imageWidthCharacter,
-      imageHeightCharacter,
-    } = this.state;
+    const { keysPressed, top, left, walls } = this.state;
     let newTop = top;
     let newLeft = left;
 
@@ -133,8 +126,8 @@ class MovingDiv extends Component<{}, MovingDivState> {
     // Sprawdzanie granic kontenera
     const containerWidth = this.containerRef.current?.offsetWidth || 400;
     const containerHeight = this.containerRef.current?.offsetHeight || 400;
-    const divWidth = imageWidthCharacter;
-    const divHeight = imageHeightCharacter;
+    const divWidth = 50;
+    const divHeight = 50;
 
     if (newLeft < 0) {
       newLeft = 0;
@@ -219,15 +212,6 @@ class MovingDiv extends Component<{}, MovingDivState> {
     };
   }
 
-  moveCamera = (dx: number, dy: number) => {
-    const { top, left } = this.state;
-    const newTop = top + dy;
-    const newLeft = left + dx;
-    this.setState({ top: newTop, left: newLeft }, () => {
-      this.savePositionToLocalStorage();
-    });
-  };
-
   render() {
     const {
       top,
@@ -246,7 +230,6 @@ class MovingDiv extends Component<{}, MovingDivState> {
       border: "1px solid black",
       backgroundImage: `url(${this.MainMapImage})`,
       backgroundSize: "cover",
-      transform: `translate(${-left}px, ${-top}px)`,
     };
 
     return (
@@ -268,13 +251,26 @@ class MovingDiv extends Component<{}, MovingDivState> {
             top: `${top}px`,
             left: `${left}px`,
             position: "absolute",
-            width: `${imageWidthCharacter}px`,
-            height: `${imageHeightCharacter}px`,
+            width: "50px",
+            height: "50px",
             backgroundColor: "blue",
-            backgroundImage: `url(${this.MainCharacter})`,
-            backgroundPositionX: "-20px",
+            display: "flex",
+            alignItems: "end",
+            justifyContent: "center",
           }}
-        ></div>
+        >
+          <div
+            style={{
+              width: `${imageWidthCharacter}px`,
+              height: `${imageHeightCharacter}px`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <img src={this.MainCharacter} alt="Main Character" />
+          </div>
+        </div>
       </div>
     );
   }
