@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/BartoszSeno/MmoZero.git/static/css/main.0e0f9b48.css",
+    "main.js": "/BartoszSeno/MmoZero.git/static/js/main.a6444366.js",
+    "index.html": "/BartoszSeno/MmoZero.git/index.html",
+    "main.0e0f9b48.css.map": "/BartoszSeno/MmoZero.git/static/css/main.0e0f9b48.css.map",
+    "main.a6444366.js.map": "/BartoszSeno/MmoZero.git/static/js/main.a6444366.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0e0f9b48.css",
+    "static/js/main.a6444366.js"
+  ]
+}
