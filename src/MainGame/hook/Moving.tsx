@@ -1,9 +1,18 @@
 import React, { Component } from "react";
+import Wall from "./Wall";
+
+interface WallData {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+}
 
 interface MovingDivState {
   top: number;
   left: number;
   keysPressed: Set<string>;
+  walls: WallData[];
 }
 
 class MovingDiv extends Component<{}, MovingDivState> {
@@ -16,6 +25,13 @@ class MovingDiv extends Component<{}, MovingDivState> {
       top: 0,
       left: 0,
       keysPressed: new Set<string>(),
+      walls: [
+        { left: 100, top: 150, width: 20, height: 100 },
+        { left: 200, top: 50, width: 20, height: 100 },
+        { left: 200, top: 250, width: 20, height: 100 },
+
+        // Dodaj inne ściany według potrzeb
+      ],
     };
     this.containerRef = React.createRef();
   }
@@ -24,6 +40,8 @@ class MovingDiv extends Component<{}, MovingDivState> {
     window.addEventListener("keydown", this.handleKeyDown);
     window.addEventListener("keyup", this.handleKeyUp);
     this.startMoving();
+    this.startMoving();
+    this.loadPositionFromLocalStorage();
   }
 
   componentWillUnmount() {
@@ -52,9 +70,23 @@ class MovingDiv extends Component<{}, MovingDivState> {
     clearInterval(this.interval);
   };
 
+  loadPositionFromLocalStorage() {
+    const savedPosition = localStorage.getItem("divPosition");
+    if (savedPosition) {
+      const position = JSON.parse(savedPosition);
+      this.setState({ top: position.top, left: position.left });
+    }
+  }
+
+  savePositionToLocalStorage() {
+    const { top, left } = this.state;
+    const position = { top, left };
+    localStorage.setItem("divPosition", JSON.stringify(position));
+  }
+
   moveDiv = () => {
-    const speed = 10; // Prędkość poruszania DIVa
-    const { keysPressed, top, left } = this.state;
+    const speed = 1; // Prędkość poruszania DIVa
+    const { keysPressed, top, left, walls } = this.state;
     let newTop = top;
     let newLeft = left;
 
@@ -90,95 +122,90 @@ class MovingDiv extends Component<{}, MovingDivState> {
     }
 
     // Sprawdzanie kolizji ze ścianami
-    const wall1Left = 100;
-    const wall1Top = 150;
-    const wall1Width = 20;
-    const wall1Height = 100;
-
-    const wall2Left = 200;
-    const wall2Top = 50;
-    const wall2Width = 20;
-    const wall2Height = 100;
-
-    if (
-      newLeft + divWidth > wall1Left &&
-      newLeft < wall1Left + wall1Width &&
-      newTop + divHeight > wall1Top &&
-      newTop < wall1Top + wall1Height
-    ) {
-      // Kolizja ze ścianą 1
-      if (newLeft + divWidth > wall1Left && newLeft < wall1Left) {
-        newLeft = wall1Left - divWidth;
-      } else if (
-        newLeft < wall1Left + wall1Width &&
-        newLeft + divWidth > wall1Left + wall1Width
+    for (const wall of walls) {
+      if (
+        newLeft + divWidth > wall.left &&
+        newLeft < wall.left + wall.width &&
+        newTop + divHeight > wall.top &&
+        newTop < wall.top + wall.height
       ) {
-        newLeft = wall1Left + wall1Width;
+        // Kolizja ze ścianą
+        const leftDistance = newLeft + divWidth - wall.left;
+        const rightDistance = wall.left + wall.width - newLeft;
+        const topDistance = newTop + divHeight - wall.top;
+        const bottomDistance = wall.top + wall.height - newTop;
+
+        if (
+          leftDistance < rightDistance &&
+          leftDistance < topDistance &&
+          leftDistance < bottomDistance
+        ) {
+          // Przeszkoda jest z lewej strony, zablokuj ruch w lewo
+          newLeft = wall.left - divWidth;
+        } else if (
+          rightDistance < leftDistance &&
+          rightDistance < topDistance &&
+          rightDistance < bottomDistance
+        ) {
+          // Przeszkoda jest z prawej strony, zablokuj ruch w prawo
+          newLeft = wall.left + wall.width;
+        } else if (
+          topDistance < leftDistance &&
+          topDistance < rightDistance &&
+          topDistance < bottomDistance
+        ) {
+          // Przeszkoda jest u góry, zablokuj ruch w górę
+          newTop = wall.top - divHeight;
+        } else if (
+          bottomDistance < leftDistance &&
+          bottomDistance < rightDistance &&
+          bottomDistance < topDistance
+        ) {
+          // Przeszkoda jest na dole, zablokuj ruch w dół
+          newTop = wall.top + wall.height;
+        }
       }
     }
 
-    if (
-      newLeft + divWidth > wall2Left &&
-      newLeft < wall2Left + wall2Width &&
-      newTop + divHeight > wall2Top &&
-      newTop < wall2Top + wall2Height
-    ) {
-      // Kolizja ze ścianą 2
-      if (newLeft + divWidth > wall2Left && newLeft < wall2Left) {
-        newLeft = wall2Left - divWidth;
-      } else if (
-        newLeft < wall2Left + wall2Width &&
-        newLeft + divWidth > wall2Left + wall2Width
-      ) {
-        newLeft = wall2Left + wall2Width;
-      }
-    }
-
-    this.setState({ top: newTop, left: newLeft });
+    this.setState({ top: newTop, left: newLeft }, () => {
+      this.savePositionToLocalStorage(); // Zapisz pozycję po każdym ruchu
+    });
   };
 
   render() {
-    const { top, left } = this.state;
+    const { top, left, walls } = this.state;
 
     const containerStyle: React.CSSProperties = {
       width: "400px",
       height: "400px",
-      position: "relative", // Tutaj używamy typu React.CSSProperties
+      position: "relative",
       border: "1px solid black",
-    };
-
-    const wall1Style: React.CSSProperties = {
-      left: "100px",
-      top: "150px",
-      width: "20px",
-      height: "100px",
-      position: "absolute",
-      backgroundColor: "red",
-    };
-
-    const wall2Style: React.CSSProperties = {
-      left: "200px",
-      top: "50px",
-      width: "20px",
-      height: "100px",
-      position: "absolute",
-      backgroundColor: "red",
-    };
-
-    const divStyle = {
-      top: `${top}px`,
-      left: `${left}px`,
-      position: "absolute" as "absolute",
-      width: "50px",
-      height: "50px",
-      backgroundColor: "blue",
     };
 
     return (
       <div style={containerStyle} ref={this.containerRef}>
-        <div style={wall1Style}></div>
-        <div style={wall2Style}></div>
-        <div style={divStyle}></div>
+        {walls.map((wall, index) => (
+          <Wall
+            key={index}
+            style={{
+              left: `${wall.left}px`,
+              top: `${wall.top}px`,
+              width: `${wall.width}px`,
+              height: `${wall.height}px`,
+              backgroundColor: "red", // Kolor ściany
+            }}
+          />
+        ))}
+        <div
+          style={{
+            top: `${top}px`,
+            left: `${left}px`,
+            position: "absolute",
+            width: "50px",
+            height: "50px",
+            backgroundColor: "blue",
+          }}
+        ></div>
       </div>
     );
   }
