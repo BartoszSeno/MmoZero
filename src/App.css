@@ -1,38 +1,125 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#App-container {
   display: flex;
+  justify-content: space-between;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-y: -100px;
+}
+
+.App {
+  display: flex;
+  justify-content: center;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.left-container {
+  transition: 0.35s;
+  display: flex;
+  align-items: center;
+  height: 977px;
+  width: 700px;
+  display: flex;
+  flex-direction: column;
+  background-image: url("https://raw.githubusercontent.com/BartoszSeno/ClickerZero/7e8292ed207169e5416054a869ee13d41b11f066/src/assets/MainImg/LeftMenu.png");
 }
 
-@keyframes App-logo-spin {
-  from {
+.CloseAndOpenMenu {
+  position: absolute;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  height: 70px;
+  width: 60px;
+  cursor: pointer;
+  z-index: 10000;
+  margin-left: 723px;
+  margin-top: 0px;
+}
+
+.FastAccesToMenu {
+  height: 400px;
+  width: 100px;
+  margin-top: 100px;
+  margin-left: 690px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  z-index: 10000;
+}
+
+.FAShop {
+  width: 70px;
+  height: 91px;
+  border: none;
+  background-image: url(https://raw.githubusercontent.com/BartoszSeno/ClickerZero/main/src/assets/MainImg/icon/shop.png);
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.FAUpgrade {
+  width: 77px;
+  height: 105px;
+  border: none;
+  background-image: url(https://raw.githubusercontent.com/BartoszSeno/ClickerZero/main/src/assets/MainImg/icon/upgrade.png);
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.FAShop:hover,
+.FAUpgrade:hover {
+  animation: LitleWind 0.6s ease-out;
+}
+
+@keyframes LitleWind {
+  0% {
     transform: rotate(0deg);
+    transform-origin: center top;
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    transform: rotate(5deg);
+    transform-origin: center top;
   }
+  100% {
+    transform: rotate(0deg);
+    transform-origin: center top;
+  }
+}
+
+.opensidemenu,
+.closesidemenu {
+  animation: ShowUpSideMenu 0.6s ease-out;
+}
+
+@keyframes ShowUpSideMenu {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.InfoOpen {
+  height: 40px;
+  width: 100px;
+  background-color: #967853;
+  border: 2px solid #493823;
+  color: white;
+  font-size: 30px;
+  margin-left: 1650px;
+  font-family: "Alagard";
+  z-index: 10001;
+  cursor: pointer;
+}
+
+button:disabled {
+  filter: brightness(40%) grayscale(60%);
+  -webkit-filter: brightness(40%) grayscale(60%);
+}
+
+#SilverCountInfo {
+  margin-top: 50px;
 }

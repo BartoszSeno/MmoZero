@@ -1,70 +1,80 @@
-# Getting Started with Create React App
+## Inventory System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- Fully functioning Drag and Drop system
+- Putting items on a character
+- Items can be unequip from the character
+- Purchased items appear in the inventory
+- Saving item position
+- Each item has different stats that work on HP or DMG/Per Click
+- ![img](https://raw.githubusercontent.com/BartoszSeno/ClickerZero/main/src/assets/MainImg/readme/DnD.gif)
 
-## Available Scripts
+## Lvling
 
-In the project directory, you can run:
+- Leveling up by collecting silver
+- Each lvl gives you a point to upgrade your character
+- Each next lvl is more difficult
+- ![img](https://raw.githubusercontent.com/BartoszSeno/ClickerZero/main/src/assets/MainImg/readme/lvl.gif)
 
-### `npm start`
+## Enchanting
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Any item can be upgraded
+- Maximum upgrade is 15
+- Each upgrade increases Dmg or Def
+- Once an item reaches maximum upgrade, it cannot be upgraded
+- The item selection window is an inventory
+- ![img](https://raw.githubusercontent.com/BartoszSeno/ClickerZero/main/src/assets/MainImg/readme/enchant.gif)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## day Cycle
+- Counting how many days have passed
+- 1 day lasts 40 minutes
+- Day/noon/night light visible across the map
+- The ability to turn off the day/noon/night light
+- ![img](https://raw.githubusercontent.com/BartoszSeno/ClickerZero/main/src/assets/MainImg/readme/DayCycle.gif)
 
-### `npm test`
+## Fishing
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Mini-Game where you have to press the correctly keys ( W , A , S , D ) otherwise failed to catch
+- When you catch a fish, it appears in your inventory
+- The ability to sell fish to a Vendor who changes whereabouts
+- 10 types of fish
+- ![img](https://raw.githubusercontent.com/BartoszSeno/ClickerZero/main/src/assets/MainImg/readme/Fish.gif)
 
-### `npm run build`
+## Chess
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Full Working chess
+- Surrender after 13 player moves
+- Restart the game at the end of the game
+- prizes are available for winning (exp / items / money)
+- ![img](https://raw.githubusercontent.com/BartoszSeno/ClickerZero/main/src/assets/MainImg/readme/chess.gif)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# In plans :white_check_mark: :x:
 
-### `npm run eject`
+- :white_check_mark: Time and day counter
+- :x: Improving clicking / unlocking features (shop / enchant etc.)
+- :white_check_mark: Hotel sleeping function (cdr (sleeping restores all hp))
+- :white_check_mark: A pond where you can catch fish and :arrows_clockwise: sell them or :x: eat them (hp regen)
+- :white_check_mark: :arrows_clockwise: Added Vendor cat (appears in many places) where you can sell fish
+- :white_check_mark: Adding an inn :x: where you can eat (for gets buffs)
+- :x: Mini game where you can bet money (in inn)
+- :x: Buying your own apartment
+- :x: The ability to upgrade it and decorate the apartment, sleeping and cooking in it
+- :white_check_mark: Add a park with mini games :x: and free sleeping (regenerates less hp)
+- :x: add character walking features
+- :x: Adding animation to the whole game
+- ### Dungeon
+- :x: Adding multiple rooms/levels
+- :x: New items only available in the dungeon
+- :x: Fighting an enemy lowers HP
+- :x: When it reaches 0 HP, it kicks you out of the dungeon
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Graphics
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- All graphics are downloaded from free assets from the website: [itch.io](https://itch.io/game-assets/free/tag-pixel-art)
+- Most of the graphics were modified by me
+- linking art creators in the future in the game
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Link To Demo Version
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- this is a working version and everything is subject to change
+- https://bartoszseno.github.io/ClickerZero/
