@@ -218,8 +218,8 @@ class MovingDiv extends Component<{}, MovingDivState> {
     const image = new Image();
     image.src = MainCharacterImageUrl;
     image.onload = () => {
-      const imageWidthCharacter = image.width;
-      const imageHeightCharacter = image.height;
+      const imageWidthCharacter = image.width / 2;
+      const imageHeightCharacter = image.height / 2;
       this.setState({ imageWidthCharacter, imageHeightCharacter });
     };
   }

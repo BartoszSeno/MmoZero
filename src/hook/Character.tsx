@@ -7,7 +7,15 @@ export const MainCharacterImageUrl =
 interface MainCharacterProps {}
 
 const MainCharacter: React.FC<MainCharacterProps> = () => {
-  return <img src={MainCharacterImageUrl} alt="Main Character" />;
+  return (
+    <img
+      src={MainCharacterImageUrl}
+      alt="Main Character"
+      style={{
+        height: "200px",
+      }}
+    />
+  );
 };
 
 export default MainCharacter;
