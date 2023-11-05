@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Wall from "./Wall";
+import MainCharacter, { MainCharacterImageUrl } from "./Character";
+import MainMap, { MainMapImage } from "./Map";
 
 interface WallData {
   left: number;
@@ -27,12 +29,6 @@ class MovingDiv extends Component<{}, MovingDivState> {
   // fast accest to modivy the world
   //============================================
   MovmentSpeed = 10;
-
-  MainMapImage =
-    "https://raw.githubusercontent.com/BartoszSeno/ClickerZero/main/src/assets/MainImg/MainBg2.png";
-
-  MainCharacter =
-    "https://raw.githubusercontent.com/BartoszSeno/ClickerZero/main/src/assets/MainImg/Characters/Joanna.gif";
 
   //============================================
   constructor(props: {}) {
@@ -210,7 +206,7 @@ class MovingDiv extends Component<{}, MovingDivState> {
 
   componentDidMountImage() {
     const image = new Image();
-    image.src = this.MainMapImage;
+    image.src = MainMapImage;
     image.onload = () => {
       const imageWidth = image.width;
       const imageHeight = image.height;
@@ -220,7 +216,7 @@ class MovingDiv extends Component<{}, MovingDivState> {
 
   componentDidMountImageCharacter() {
     const image = new Image();
-    image.src = this.MainCharacter;
+    image.src = MainCharacterImageUrl;
     image.onload = () => {
       const imageWidthCharacter = image.width;
       const imageHeightCharacter = image.height;
@@ -240,29 +236,23 @@ class MovingDiv extends Component<{}, MovingDivState> {
       backgroundPosition,
     } = this.state;
 
-    const GameMap: React.CSSProperties = {
-      width: imageWidth + "px",
-      height: imageHeight + "px",
-      position: "relative",
-      border: "1px solid black",
-      backgroundRepeat: "no-repeat",
-      backgroundImage: `url(${this.MainMapImage})`,
-      backgroundSize: "cover",
-      backgroundPosition,
-    };
     const wallAnimationOffsetX = left - window.innerWidth / 2; // Zmień wartość 0.5 na dowolną, aby dostosować prędkość ruchu ścian
     const wallAnimationOffsetY = top - window.innerHeight / 2;
 
     return (
       <>
-        <div style={GameMap} ref={this.containerRef}>
+        <MainMap
+          bgPosition={backgroundPosition}
+          imgW={imageWidth}
+          imgH={imageHeight}
+          refs={this.containerRef}
+        >
           {walls.map((wall, index) => (
             <Wall
               key={index}
               style={{
                 left: `${wall.left - wallAnimationOffsetX}px`,
                 top: `${wall.top - wallAnimationOffsetY}px`,
-
                 width: `${wall.width}px`,
                 height: `${wall.height}px`,
                 backgroundColor: "red", // Kolor ściany
@@ -291,10 +281,10 @@ class MovingDiv extends Component<{}, MovingDivState> {
                 justifyContent: "center",
               }}
             >
-              <img src={this.MainCharacter} alt="Main Character" />
+              <MainCharacter />
             </div>
           </div>
-        </div>
+        </MainMap>
       </>
     );
   }
