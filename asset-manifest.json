@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/MmoZero/static/css/main.fd1089d2.css",
-    "main.js": "/MmoZero/static/js/main.87ac59a3.js",
+    "main.js": "/MmoZero/static/js/main.6b32264f.js",
     "index.html": "/MmoZero/index.html",
     "main.fd1089d2.css.map": "/MmoZero/static/css/main.fd1089d2.css.map",
-    "main.87ac59a3.js.map": "/MmoZero/static/js/main.87ac59a3.js.map"
+    "main.6b32264f.js.map": "/MmoZero/static/js/main.6b32264f.js.map"
   },
   "entrypoints": [
     "static/css/main.fd1089d2.css",
-    "static/js/main.87ac59a3.js"
+    "static/js/main.6b32264f.js"
   ]
 }
