@@ -106,7 +106,7 @@ class MovingDiv extends Component<{}, MovingDivState> {
 
   moveDiv = () => {
     const speed = this.MovmentSpeed; // Prędkość poruszania DIVa
-    const { keysPressed, top, left, walls, backgroundPosition } = this.state;
+    const { keysPressed, top, left, walls } = this.state;
     let newTop = top;
     let newLeft = left;
 
@@ -189,8 +189,8 @@ class MovingDiv extends Component<{}, MovingDivState> {
       }
     }
 
-    const backgroundX = -(newLeft - window.innerWidth / 2);
     const backgroundY = -(newTop - window.innerHeight / 2);
+    const backgroundX = -(newLeft - window.innerWidth / 2);
 
     this.setState(
       {
@@ -236,7 +236,7 @@ class MovingDiv extends Component<{}, MovingDivState> {
       backgroundPosition,
     } = this.state;
 
-    const wallAnimationOffsetX = left - window.innerWidth / 2; // Zmień wartość 0.5 na dowolną, aby dostosować prędkość ruchu ścian
+    const wallAnimationOffsetX = left - window.innerWidth / 2;
     const wallAnimationOffsetY = top - window.innerHeight / 2;
 
     return (
