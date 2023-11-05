@@ -17,6 +17,7 @@ interface MovingDivState {
   imageHeight: number;
   imageWidthCharacter: number;
   imageHeightCharacter: number;
+  backgroundPosition: any;
 }
 
 class MovingDiv extends Component<{}, MovingDivState> {
@@ -36,22 +37,25 @@ class MovingDiv extends Component<{}, MovingDivState> {
   //============================================
   constructor(props: {}) {
     super(props);
+
     this.state = {
-      top: 0,
-      left: 0,
+      top: window.innerHeight / 2 - 25,
+      left: window.innerWidth / 2 - 25,
       keysPressed: new Set<string>(),
       walls: [
         { left: 100, top: 150, width: 20, height: 100 },
         { left: 200, top: 50, width: 20, height: 100 },
         { left: 200, top: 250, width: 20, height: 100 },
-
-        // Dodaj inne ściany według potrzeb
+        { left: 2000, top: 250, width: 20, height: 100 },
+        { left: 2000, top: 550, width: 20, height: 100 },
       ],
       imageWidth: 0,
       imageHeight: 0,
       imageWidthCharacter: 0,
       imageHeightCharacter: 0,
+      backgroundPosition: "50% 50%", // Pozycja planszy w poziomie i pionie
     };
+
     this.containerRef = React.createRef();
   }
 
@@ -59,7 +63,7 @@ class MovingDiv extends Component<{}, MovingDivState> {
     window.addEventListener("keydown", this.handleKeyDown);
     window.addEventListener("keyup", this.handleKeyUp);
     this.startMoving();
-    this.loadPositionFromLocalStorage();
+    // this.loadPositionFromLocalStorage();
     this.componentDidMountImage();
     this.componentDidMountImageCharacter();
   }
@@ -106,7 +110,7 @@ class MovingDiv extends Component<{}, MovingDivState> {
 
   moveDiv = () => {
     const speed = this.MovmentSpeed; // Prędkość poruszania DIVa
-    const { keysPressed, top, left, walls } = this.state;
+    const { keysPressed, top, left, walls, backgroundPosition } = this.state;
     let newTop = top;
     let newLeft = left;
 
@@ -124,10 +128,12 @@ class MovingDiv extends Component<{}, MovingDivState> {
     }
 
     // Sprawdzanie granic kontenera
-    const containerWidth = this.containerRef.current?.offsetWidth || 400;
-    const containerHeight = this.containerRef.current?.offsetHeight || 400;
     const divWidth = 50;
     const divHeight = 50;
+    const containerWidth =
+      this.containerRef.current?.offsetWidth || window.innerWidth;
+    const containerHeight =
+      this.containerRef.current?.offsetHeight || window.innerHeight;
 
     if (newLeft < 0) {
       newLeft = 0;
@@ -187,9 +193,19 @@ class MovingDiv extends Component<{}, MovingDivState> {
       }
     }
 
-    this.setState({ top: newTop, left: newLeft }, () => {
-      this.savePositionToLocalStorage(); // Zapisz pozycję po każdym ruchu
-    });
+    const backgroundX = -(newLeft - window.innerWidth / 2);
+    const backgroundY = -(newTop - window.innerHeight / 2);
+
+    this.setState(
+      {
+        top: newTop,
+        left: newLeft,
+        backgroundPosition: `${backgroundX}px ${backgroundY}px`,
+      },
+      () => {
+        // this.savePositionToLocalStorage(); // Zapisz pozycję po każdym ruchu
+      }
+    );
   };
 
   componentDidMountImage() {
@@ -221,57 +237,65 @@ class MovingDiv extends Component<{}, MovingDivState> {
       imageHeight,
       imageWidthCharacter,
       imageHeightCharacter,
+      backgroundPosition,
     } = this.state;
 
-    const containerStyle: React.CSSProperties = {
+    const GameMap: React.CSSProperties = {
       width: imageWidth + "px",
       height: imageHeight + "px",
       position: "relative",
       border: "1px solid black",
+      backgroundRepeat: "no-repeat",
       backgroundImage: `url(${this.MainMapImage})`,
       backgroundSize: "cover",
+      backgroundPosition,
     };
+    const wallAnimationOffsetX = left - window.innerWidth / 2; // Zmień wartość 0.5 na dowolną, aby dostosować prędkość ruchu ścian
+    const wallAnimationOffsetY = top - window.innerHeight / 2;
 
     return (
-      <div style={containerStyle} ref={this.containerRef}>
-        {walls.map((wall, index) => (
-          <Wall
-            key={index}
-            style={{
-              left: `${wall.left}px`,
-              top: `${wall.top}px`,
-              width: `${wall.width}px`,
-              height: `${wall.height}px`,
-              backgroundColor: "red", // Kolor ściany
-            }}
-          />
-        ))}
-        <div
-          style={{
-            top: `${top}px`,
-            left: `${left}px`,
-            position: "absolute",
-            width: "50px",
-            height: "50px",
-            backgroundColor: "blue",
-            display: "flex",
-            alignItems: "end",
-            justifyContent: "center",
-          }}
-        >
+      <>
+        <div style={GameMap} ref={this.containerRef}>
+          {walls.map((wall, index) => (
+            <Wall
+              key={index}
+              style={{
+                left: `${wall.left - wallAnimationOffsetX}px`,
+                top: `${wall.top - wallAnimationOffsetY}px`,
+
+                width: `${wall.width}px`,
+                height: `${wall.height}px`,
+                backgroundColor: "red", // Kolor ściany
+              }}
+            />
+          ))}
           <div
             style={{
-              width: `${imageWidthCharacter}px`,
-              height: `${imageHeightCharacter}px`,
+              top: `${window.innerHeight / 2}px`,
+              left: `${window.innerWidth / 2}px`,
+              position: "absolute",
+              width: "50px",
+              height: "50px",
+              backgroundColor: "blue",
               display: "flex",
-              alignItems: "center",
+              alignItems: "end",
               justifyContent: "center",
             }}
           >
-            <img src={this.MainCharacter} alt="Main Character" />
+            <div
+              style={{
+                width: `${imageWidthCharacter}px`,
+                height: `${imageHeightCharacter}px`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <img src={this.MainCharacter} alt="Main Character" />
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }
