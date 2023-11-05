@@ -59,7 +59,7 @@ class MovingDiv extends Component<{}, MovingDivState> {
     window.addEventListener("keydown", this.handleKeyDown);
     window.addEventListener("keyup", this.handleKeyUp);
     this.startMoving();
-    // this.loadPositionFromLocalStorage();
+    this.loadPositionFromLocalStorage();
     this.componentDidMountImage();
     this.componentDidMountImageCharacter();
   }
@@ -199,7 +199,7 @@ class MovingDiv extends Component<{}, MovingDivState> {
         backgroundPosition: `${backgroundX}px ${backgroundY}px`,
       },
       () => {
-        // this.savePositionToLocalStorage(); // Zapisz pozycję po każdym ruchu
+        this.savePositionToLocalStorage(); // Zapisz pozycję po każdym ruchu
       }
     );
   };
