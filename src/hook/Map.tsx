@@ -2,7 +2,7 @@
 import React from "react";
 
 export const MainMapImage =
-  "https://raw.githubusercontent.com/BartoszSeno/ClickerZero/main/src/assets/MainImg/MainBg2.png";
+  "https://raw.githubusercontent.com/BartoszSeno/MmoZero/master/src/asset/image/world/mapsizetest.png";
 
 interface MainMapProps {
   bgPosition: any;
