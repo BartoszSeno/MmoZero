@@ -77,6 +77,7 @@ function MainPlace() {
   }, []);
 
   const sendPlayerPosition = async () => {
+    console.log("test");
     try {
       const response = await fetch(
         "http://localhost:3001/update-player-position",
@@ -101,33 +102,36 @@ function MainPlace() {
     }
   };
 
-  const handleKeyPress = (e) => {
-    const speed = 5;
-    const newPosition = { ...playerPosition };
-
-    // Zaktualizuj obiekt pressedKeys o naciśnięcie lub puszczenie klawisza
-    setPressedKeys((prevKeys) => ({
-      ...prevKeys,
-      [e.key]: e.type === "keydown",
-    }));
-
-    if (pressedKeys["a"]) newPosition.x -= speed;
-    if (pressedKeys["d"]) newPosition.x += speed;
-    if (pressedKeys["w"]) newPosition.y -= speed;
-    if (pressedKeys["s"]) newPosition.y += speed;
-
-    // Sprawdź czy nowa pozycja nie wychodzi poza granice ekranu
-    const maxX = window.innerWidth - 100; // Ustaw odpowiednią szerokość diva
-    const maxY = window.innerHeight - 100; // Ustaw odpowiednią wysokość diva
-
-    newPosition.x = Math.max(0, Math.min(newPosition.x, maxX));
-    newPosition.y = Math.max(0, Math.min(newPosition.y, maxY));
-
-    setPlayerPosition(newPosition);
-    sendPlayerPosition(); // Wyślij aktualizację pozycji gracza na serwer
-  };
-
   useEffect(() => {
+    const handleKeyPress = (e) => {
+      const speed = 20;
+      const newPosition = { ...playerPosition };
+
+      // Skopiuj obecny stan pressedKeys
+      const updatedPressedKeys = { ...pressedKeys };
+
+      // Zaktualizuj tylko naciśnięty lub puszczony klawisz
+      updatedPressedKeys[e.key] = e.type === "keydown";
+
+      setPressedKeys(updatedPressedKeys);
+
+      // Aktualizuj pozycję tylko dla klawiszy, które są aktualnie naciśnięte
+      if (updatedPressedKeys["a"]) newPosition.x -= speed;
+      if (updatedPressedKeys["d"]) newPosition.x += speed;
+      if (updatedPressedKeys["w"]) newPosition.y -= speed;
+      if (updatedPressedKeys["s"]) newPosition.y += speed;
+
+      // Sprawdź czy nowa pozycja nie wychodzi poza granice ekranu
+      const maxX = window.innerWidth - 100; // Ustaw odpowiednią szerokość diva
+      const maxY = window.innerHeight - 100; // Ustaw odpowiednią wysokość diva
+
+      newPosition.x = Math.max(0, Math.min(newPosition.x, maxX));
+      newPosition.y = Math.max(0, Math.min(newPosition.y, maxY));
+
+      setPlayerPosition(newPosition);
+      sendPlayerPosition();
+    };
+
     window.addEventListener("keydown", handleKeyPress);
     window.addEventListener("keyup", handleKeyPress);
 
@@ -148,7 +152,6 @@ function MainPlace() {
     setIsLoggin(false);
     e.preventDefault();
   };
-  console.log(textValue);
   return (
     <>
       {isLoggin ? (

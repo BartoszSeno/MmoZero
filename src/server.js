@@ -64,31 +64,31 @@ app.post("/save-username", (req, res) => {
 
   res.send({ success: true });
 });
+setInterval(() => {
+  app.post("/update-player-position", (req, res) => {
+    const { userID, position, IdValue } = req.body;
 
-app.post("/update-player-position", (req, res) => {
-  const { userID, position, IdValue } = req.body;
+    let data = [];
+    try {
+      data = JSON.parse(fs.readFileSync("data/Loggindata.json"));
+    } catch (error) {
+      // Jeśli plik nie istnieje, zostanie utworzony pusty
+    }
 
-  let data = [];
-  try {
-    data = JSON.parse(fs.readFileSync("data/Loggindata.json"));
-  } catch (error) {
-    // Jeśli plik nie istnieje, zostanie utworzony pusty
-  }
+    // Znajdź użytkownika po userID i zaktualizuj jego pozycję
+    const userIndex = data.findIndex((user) => user.id === IdValue);
+    if (userIndex !== -1) {
+      data[userIndex].position = position;
+    }
 
-  // Znajdź użytkownika po userID i zaktualizuj jego pozycję
-  const userIndex = data.findIndex((user) => user.id === IdValue);
-  if (userIndex !== -1) {
-    data[userIndex].position = position;
-  }
+    fs.writeFileSync("data/Loggindata.json", JSON.stringify(data, null, 2));
 
-  fs.writeFileSync("data/Loggindata.json", JSON.stringify(data, null, 2));
+    // Po aktualizacji pozycji gracza, wyślij informację do klientów, że dane się zmieniły
+    sendToClients({ success: true });
 
-  // Po aktualizacji pozycji gracza, wyślij informację do klientów, że dane się zmieniły
-  sendToClients({ success: true });
-
-  res.send({ success: true });
-});
-
+    res.send({ success: true });
+  });
+}, 16);
 app.get("/get-username", (req, res) => {
   let data = [];
   try {
