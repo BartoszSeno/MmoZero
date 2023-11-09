@@ -22,7 +22,12 @@ interface MovingDivState {
   backgroundPosition: any;
 }
 
-class MovingDiv extends Component<{}, MovingDivState> {
+interface MovingDivProps {
+  usernames: any[]; // Dostosuj typ danych do rzeczywistego formatu danych
+  textValue: string;
+}
+
+class MovingDiv extends Component<MovingDivProps, MovingDivState> {
   interval: NodeJS.Timer | undefined;
   containerRef: React.RefObject<HTMLDivElement>;
 
@@ -31,7 +36,7 @@ class MovingDiv extends Component<{}, MovingDivState> {
   MovmentSpeed = 100;
 
   //============================================
-  constructor(props: {}) {
+  constructor(props: MovingDivProps) {
     super(props);
 
     this.state = {
@@ -372,6 +377,7 @@ class MovingDiv extends Component<{}, MovingDivState> {
     const wallAnimationOffsetX = left - window.innerWidth / 2;
     const wallAnimationOffsetY = top - window.innerHeight / 2;
 
+    const { usernames, textValue } = this.props;
     return (
       <>
         <MainMap
@@ -392,6 +398,21 @@ class MovingDiv extends Component<{}, MovingDivState> {
               }}
             />
           ))}
+          {usernames.map((user) => (
+            <div
+              key={user.id}
+              id={user.id}
+              style={{
+                color: user.id === textValue ? "red" : "black",
+                position: "absolute",
+                left: user.position ? `${user.position.x}px` : "0",
+                top: user.position ? `${user.position.y}px` : "0",
+              }}
+            >
+              {user.userName}
+            </div>
+          ))}
+
           <div
             style={{
               top: `${window.innerHeight / 2}px`,
