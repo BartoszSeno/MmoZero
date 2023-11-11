@@ -25,6 +25,7 @@ interface MovingDivState {
 interface MovingDivProps {
   usernames: any[]; // Dostosuj typ danych do rzeczywistego formatu danych
   textValue: string;
+  wallsN: any[];
 }
 
 class MovingDiv extends Component<MovingDivProps, MovingDivState> {
@@ -238,7 +239,7 @@ class MovingDiv extends Component<MovingDivProps, MovingDivState> {
     const wallAnimationOffsetX = left - window.innerWidth / 2;
     const wallAnimationOffsetY = top - window.innerHeight / 2;
 
-    const { usernames, textValue } = this.props;
+    const { usernames, textValue, wallsN } = this.props;
     return (
       <>
         <MainMap
@@ -247,18 +248,24 @@ class MovingDiv extends Component<MovingDivProps, MovingDivState> {
           imgH={imageHeight}
           refs={this.containerRef}
         >
-          {walls.map((wall, index) => (
-            <Wall
-              key={index}
-              style={{
-                left: `${wall.left - wallAnimationOffsetX}px`,
-                top: `${wall.top - wallAnimationOffsetY}px`,
-                width: `${wall.width}px`,
-                height: `${wall.height}px`,
-                backgroundColor: "red", // Kolor ściany
-              }}
-            />
-          ))}
+          {wallsN.map(
+            (
+              wall: { x: any; y: any; width: any; height: any },
+              index: React.Key | null | undefined
+            ) => (
+              <div
+                key={index}
+                style={{
+                  position: "absolute",
+                  left: wall.x,
+                  top: wall.y,
+                  width: wall.width,
+                  height: wall.height,
+                  background: "gray", // Kolor ściany
+                }}
+              ></div>
+            )
+          )}
           {usernames.map((user) => (
             <div
               key={user.id}

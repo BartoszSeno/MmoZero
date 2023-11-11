@@ -7,9 +7,13 @@ function MainPlace() {
   const [username, setUsername] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [UserID, setUserID] = useState("");
-  const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 });
+  const [playerPosition, setPlayerPosition] = useState({ x: 500, y: 500 });
   const [pressedKeys, setPressedKeys] = useState({});
   const [textValue, setTextValue] = useState("");
+  const [wallsN, setwallsN] = useState([
+    { x: 100, y: 100, width: 50, height: 200 },
+    // Dodaj więcej ścian według potrzeb
+  ]);
 
   const getUniqueID = () => {
     const s4 = () =>
@@ -106,6 +110,8 @@ function MainPlace() {
     const handleKeyPress = (e) => {
       const speed = 20;
       const newPosition = { ...playerPosition };
+      const divWidth = 50;
+      const divHeight = 50;
 
       // Skopiuj obecny stan pressedKeys
       const updatedPressedKeys = { ...pressedKeys };
@@ -122,14 +128,65 @@ function MainPlace() {
       if (updatedPressedKeys["s"]) newPosition.y += speed;
 
       // Sprawdź czy nowa pozycja nie wychodzi poza granice ekranu
-      const maxX = window.innerWidth - 100; // Ustaw odpowiednią szerokość diva
-      const maxY = window.innerHeight - 100; // Ustaw odpowiednią wysokość diva
+      const maxX = window.innerWidth - divWidth; // Ustaw odpowiednią szerokość diva
+      const maxY = window.innerHeight - divHeight; // Ustaw odpowiednią wysokość diva
 
       newPosition.x = Math.max(0, Math.min(newPosition.x, maxX));
       newPosition.y = Math.max(0, Math.min(newPosition.y, maxY));
 
-      setPlayerPosition(newPosition);
-      sendPlayerPosition();
+      // Sprawdź kolizje z każdą ścianą
+      const collidesWithWall = wallsN.some((wall) => {
+        for (const wall of wallsN) {
+          if (
+            newPosition.x + divWidth > wall.x &&
+            newPosition.x < wall.x + wall.width &&
+            newPosition.y + divHeight > wall.y &&
+            newPosition.y < wall.y + wall.height
+          ) {
+            // Kolizja ze ścianą
+            const leftDistance = newPosition.x + divWidth - wall.x;
+            const rightDistance = wall.x + wall.width - newPosition.x;
+            const topDistance = newPosition.y + divHeight - wall.y;
+            const bottomDistance = wall.y + wall.height - newPosition.y;
+
+            if (
+              leftDistance < rightDistance &&
+              leftDistance < topDistance &&
+              leftDistance < bottomDistance
+            ) {
+              // Przeszkoda jest z lewej strony, zablokuj ruch w lewo
+              newPosition.x = wall.x - divWidth;
+            } else if (
+              rightDistance < leftDistance &&
+              rightDistance < topDistance &&
+              rightDistance < bottomDistance
+            ) {
+              // Przeszkoda jest z prawej strony, zablokuj ruch w prawo
+              newPosition.x = wall.x + wall.width;
+            } else if (
+              topDistance < leftDistance &&
+              topDistance < rightDistance &&
+              topDistance < bottomDistance
+            ) {
+              // Przeszkoda jest u góry, zablokuj ruch w górę
+              newPosition.y = wall.y - divHeight;
+            } else if (
+              bottomDistance < leftDistance &&
+              bottomDistance < rightDistance &&
+              bottomDistance < topDistance
+            ) {
+              // Przeszkoda jest na dole, zablokuj ruch w dół
+              newPosition.y = wall.y + wall.height;
+            }
+          }
+        }
+      });
+
+      if (!collidesWithWall) {
+        // Aktualizuj pozycję gracza tylko jeśli nie koliduje z żadną ścianą
+        setPlayerPosition(newPosition);
+        sendPlayerPosition();
+      }
     };
 
     window.addEventListener("keydown", handleKeyPress);
@@ -168,7 +225,11 @@ function MainPlace() {
         </>
       ) : (
         <>
-          <MovingDiv usernames={usernames} textValue={textValue} />
+          <MovingDiv
+            usernames={usernames}
+            textValue={textValue}
+            wallsN={wallsN}
+          />
         </>
       )}
     </>
