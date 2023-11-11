@@ -136,47 +136,39 @@ function MainPlace() {
 
       // Sprawdź kolizje z każdą ścianą
       const collidesWithWall = wallsN.some((wall) => {
-        for (const wall of wallsN) {
-          if (
-            newPosition.x + divWidth > wall.x &&
-            newPosition.x < wall.x + wall.width &&
-            newPosition.y + divHeight > wall.y &&
-            newPosition.y < wall.y + wall.height
-          ) {
-            // Kolizja ze ścianą
-            const leftDistance = newPosition.x + divWidth - wall.x;
-            const rightDistance = wall.x + wall.width - newPosition.x;
-            const topDistance = newPosition.y + divHeight - wall.y;
-            const bottomDistance = wall.y + wall.height - newPosition.y;
+        const playerRight = newPosition.x + divWidth; // Prawa krawędź gracza
+        const playerBottom = newPosition.y + divHeight; // Dolna krawędź gracza
+        const wallRight = wall.x + wall.width;
+        const wallBottom = wall.y + wall.height;
 
-            if (
-              leftDistance < rightDistance &&
-              leftDistance < topDistance &&
-              leftDistance < bottomDistance
-            ) {
-              // Przeszkoda jest z lewej strony, zablokuj ruch w lewo
+        if (
+          newPosition.x < wallRight &&
+          playerRight > wall.x &&
+          newPosition.y < wallBottom &&
+          playerBottom > wall.y
+        ) {
+          // Kolizja ze ścianą
+          const overlapX =
+            Math.min(playerRight, wallRight) - Math.max(newPosition.x, wall.x);
+          const overlapY =
+            Math.min(playerBottom, wallBottom) -
+            Math.max(newPosition.y, wall.y);
+
+          if (overlapX < overlapY) {
+            if (playerRight < wallRight) {
+              // Kolizja z lewej strony ściany, zablokuj ruch w lewo
               newPosition.x = wall.x - divWidth;
-            } else if (
-              rightDistance < leftDistance &&
-              rightDistance < topDistance &&
-              rightDistance < bottomDistance
-            ) {
-              // Przeszkoda jest z prawej strony, zablokuj ruch w prawo
-              newPosition.x = wall.x + wall.width;
-            } else if (
-              topDistance < leftDistance &&
-              topDistance < rightDistance &&
-              topDistance < bottomDistance
-            ) {
-              // Przeszkoda jest u góry, zablokuj ruch w górę
+            } else {
+              // Kolizja z prawej strony ściany, zablokuj ruch w prawo
+              newPosition.x = wallRight;
+            }
+          } else {
+            if (playerBottom < wallBottom) {
+              // Kolizja u góry ściany, zablokuj ruch w górę
               newPosition.y = wall.y - divHeight;
-            } else if (
-              bottomDistance < leftDistance &&
-              bottomDistance < rightDistance &&
-              bottomDistance < topDistance
-            ) {
-              // Przeszkoda jest na dole, zablokuj ruch w dół
-              newPosition.y = wall.y + wall.height;
+            } else {
+              // Kolizja na dole ściany, zablokuj ruch w dół
+              newPosition.y = wallBottom;
             }
           }
         }
