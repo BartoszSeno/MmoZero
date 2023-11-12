@@ -108,7 +108,7 @@ function MainPlace() {
 
   useEffect(() => {
     const handleKeyPress = (e) => {
-      const speed = 20;
+      const speed = 5;
       const newPosition = { ...playerPosition };
       const divWidth = 50;
       const divHeight = 50;
@@ -116,28 +116,24 @@ function MainPlace() {
       // Skopiuj obecny stan pressedKeys
       const updatedPressedKeys = { ...pressedKeys };
 
-      // Zaktualizuj tylko naciśnięty lub puszczony klawisz
+      // Zaktualizuj tylko naciśnięty klawisz
       updatedPressedKeys[e.key] = e.type === "keydown";
 
-      setPressedKeys(updatedPressedKeys);
-
-      // Aktualizuj pozycję tylko dla klawiszy, które są aktualnie naciśnięte
       if (updatedPressedKeys["a"]) newPosition.x -= speed;
       if (updatedPressedKeys["d"]) newPosition.x += speed;
       if (updatedPressedKeys["w"]) newPosition.y -= speed;
       if (updatedPressedKeys["s"]) newPosition.y += speed;
 
-      // Sprawdź czy nowa pozycja nie wychodzi poza granice ekranu
-      const maxX = window.innerWidth - divWidth; // Ustaw odpowiednią szerokość diva
-      const maxY = window.innerHeight - divHeight; // Ustaw odpowiednią wysokość diva
+      // Aktualizuj pozycję tylko jeśli nie wychodzi poza granice ekranu
+      const maxX = window.innerWidth - divWidth;
+      const maxY = window.innerHeight - divHeight;
 
       newPosition.x = Math.max(0, Math.min(newPosition.x, maxX));
       newPosition.y = Math.max(0, Math.min(newPosition.y, maxY));
 
-      // Sprawdź kolizje z każdą ścianą
       const collidesWithWall = wallsN.some((wall) => {
-        const playerRight = newPosition.x + divWidth; // Prawa krawędź gracza
-        const playerBottom = newPosition.y + divHeight; // Dolna krawędź gracza
+        const playerRight = newPosition.x + divWidth;
+        const playerBottom = newPosition.y + divHeight;
         const wallRight = wall.x + wall.width;
         const wallBottom = wall.y + wall.height;
 
@@ -147,7 +143,6 @@ function MainPlace() {
           newPosition.y < wallBottom &&
           playerBottom > wall.y
         ) {
-          // Kolizja ze ścianą
           const overlapX =
             Math.min(playerRight, wallRight) - Math.max(newPosition.x, wall.x);
           const overlapY =
@@ -156,18 +151,14 @@ function MainPlace() {
 
           if (overlapX < overlapY) {
             if (playerRight < wallRight) {
-              // Kolizja z lewej strony ściany, zablokuj ruch w lewo
               newPosition.x = wall.x - divWidth;
             } else {
-              // Kolizja z prawej strony ściany, zablokuj ruch w prawo
               newPosition.x = wallRight;
             }
           } else {
             if (playerBottom < wallBottom) {
-              // Kolizja u góry ściany, zablokuj ruch w górę
               newPosition.y = wall.y - divHeight;
             } else {
-              // Kolizja na dole ściany, zablokuj ruch w dół
               newPosition.y = wallBottom;
             }
           }
@@ -175,21 +166,24 @@ function MainPlace() {
       });
 
       if (!collidesWithWall) {
-        // Aktualizuj pozycję gracza tylko jeśli nie koliduje z żadną ścianą
         setPlayerPosition(newPosition);
         sendPlayerPosition();
       }
+
+      // Update the pressed keys
+      setPressedKeys(updatedPressedKeys);
     };
 
     window.addEventListener("keydown", handleKeyPress);
     window.addEventListener("keyup", handleKeyPress);
+    window.requestAnimationFrame(handleKeyPress);
 
     // Usuń nasłuchiwacze zdarzeń, gdy komponent zostanie odmontowany
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
       window.removeEventListener("keyup", handleKeyPress);
     };
-  }, [playerPosition, pressedKeys]);
+  }, [pressedKeys]);
 
   //===============
 

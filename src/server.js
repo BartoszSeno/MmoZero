@@ -9,7 +9,6 @@ app.use(express.json());
 
 const clients = []; // Tablica klientów do obsługi SSE
 const userColors = {}; // Obiekt przechowujący kolory użytkowników
-const playerPositions = [];
 
 app.get("/sse", (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");
