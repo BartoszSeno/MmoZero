@@ -2,23 +2,40 @@ import React, { useState, useEffect } from "react";
 
 function MainMap({ children }) {
   const [RowOne, setRowOne] = useState([
-    { width: 1000, height: 1000, test: "mapa1" },
-    { width: 1000, height: 1000, test: "mapa2" },
-    { width: 1000, height: 1000, test: "mapa3" },
+    { width: 2000, height: 2000, test: "mapa1" },
+    { width: 2000, height: 2000, test: "mapa2" },
+    { width: 2000, height: 2000, test: "mapa3" },
   ]);
   const [RowTwo, setRowTwo] = useState([
-    { width: 1000, height: 1000, test: "mapa4" },
-    { width: 1000, height: 1000, test: "mapa5" },
-    { width: 1000, height: 1000, test: "mapa6" },
+    { width: 2000, height: 2000, test: "mapa4" },
+    { width: 2000, height: 2000, test: "mapa5" },
+    { width: 2000, height: 2000, test: "mapa6" },
   ]);
   const [RowThree, setRowThree] = useState([
-    { width: 1000, height: 1000, test: "mapa7" },
-    { width: 1000, height: 1000, test: "mapa8" },
-    { width: 1000, height: 1000, test: "mapa9" },
+    { width: 2000, height: 2000, test: "mapa7" },
+    { width: 2000, height: 2000, test: "mapa8" },
+    { width: 2000, height: 2000, test: "mapa9" },
   ]);
 
+  // Funkcja do zliczania liczby przedmiotów w danej tablicy
+  function countItems(row) {
+    return row.length;
+  }
+
+  // Obliczanie liczby przedmiotów w każdej z tablic
+  const itemCountRowOne = countItems(RowOne);
+  const itemCountRowTwo = countItems(RowTwo);
+  const itemCountRowThree = countItems(RowThree);
+
+  // Znajdź największą liczbę przedmiotów spośród trzech tablic
+  const maxItemCount = Math.max(
+    itemCountRowOne,
+    itemCountRowTwo,
+    itemCountRowThree
+  );
+
   return (
-    <div style={{ width: "3000px" }}>
+    <div style={{ width: maxItemCount * 2000 + "px" }}>
       <table>
         <tbody>
           <tr>

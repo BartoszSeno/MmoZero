@@ -95,7 +95,6 @@ function MainPlace() {
   }, []);
 
   const sendPlayerPosition = async () => {
-    console.log("test");
     try {
       const response = await fetch(
         "http://localhost:3001/update-player-position",
@@ -142,8 +141,8 @@ function MainPlace() {
       const maxX = window.innerWidth - divWidth;
       const maxY = window.innerHeight - divHeight;
 
-      newPosition.x = Math.max(0, Math.min(newPosition.x, maxX));
-      newPosition.y = Math.max(0, Math.min(newPosition.y, maxY));
+      newPosition.x = Math.max(0, Math.min(newPosition.x));
+      newPosition.y = Math.max(0, Math.min(newPosition.y));
 
       const collidesWithWall = wallsN.some((wall) => {
         const playerRight = newPosition.x + divWidth;
