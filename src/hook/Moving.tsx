@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import MainCharacter, { MainCharacterImageUrl } from "./Character";
-import MainMap, { MainMapImage } from "./Map";
+import MainMap from "./Map";
 
 interface MovingDivState {
   imageWidth: number;
@@ -44,9 +44,12 @@ class MovingDiv extends Component<MovingDivProps, MovingDivState> {
     this.componentDidMountImageCharacter();
   }
 
+  MainMapImage =
+    "https://raw.githubusercontent.com/BartoszSeno/ClickerZero/main/src/assets/MainImg/Inn/Inn.gif";
+
   componentDidMountImage() {
     const image = new Image();
-    image.src = MainMapImage;
+    image.src = this.MainMapImage;
     image.onload = () => {
       const imageWidth = image.width;
       const imageHeight = image.height;
@@ -76,12 +79,7 @@ class MovingDiv extends Component<MovingDivProps, MovingDivState> {
     const { usernames, textValue, wallsN } = this.props;
     return (
       <>
-        <MainMap
-          bgPosition={backgroundPosition}
-          imgW={imageWidth}
-          imgH={imageHeight}
-          refs={this.containerRef}
-        >
+        <MainMap>
           {wallsN.map(
             (
               wall: { x: any; y: any; width: any; height: any },

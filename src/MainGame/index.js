@@ -7,13 +7,27 @@ function MainPlace() {
   const [username, setUsername] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [UserID, setUserID] = useState("");
-  const [playerPosition, setPlayerPosition] = useState({ x: 500, y: 500 });
+
+  //================================================================
+  const screenWidth = window.innerWidth; // Szerokość ekranu
+  const screenHeight = window.innerHeight; // Wysokość ekranu
+  const initialX = screenWidth / 2; // x na środku
+  const initialY = screenHeight / 2; // y na środku
+  const [playerPosition, setPlayerPosition] = useState({
+    x: initialX,
+    y: initialY,
+  });
+  //================================================================
+
   const [pressedKeys, setPressedKeys] = useState({});
   const [textValue, setTextValue] = useState("");
+
+  //================================================================
   const [wallsN, setwallsN] = useState([
     { x: 100, y: 100, width: 50, height: 200 },
     // Dodaj więcej ścian według potrzeb
   ]);
+  //================================================================
 
   const getUniqueID = () => {
     const s4 = () =>
