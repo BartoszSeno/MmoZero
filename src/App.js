@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-//test
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import MainPlace from "./MainGame";
