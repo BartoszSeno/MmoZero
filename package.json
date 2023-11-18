@@ -22,6 +22,7 @@
     "chess.js": "^0.13.3",
     "chessboardjsx": "^2.4.7",
     "cors": "^2.8.5",
+    "express": "^4.18.2",
     "gh-pages": "^5.0.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-chessboard": "^1.2.5",

@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import MovingDiv from "../hook/Moving";
 
+export let UserIDFromMainPlace;
+
 function MainPlace() {
   const [isLoggin, setIsLoggin] = useState(true);
   const [username, setUsername] = useState("");
@@ -40,6 +42,7 @@ function MainPlace() {
   useEffect(() => {
     const newUserID = getUniqueID(); // Wygeneruj nowy unikalny identyfikator UUID
     setUserID(newUserID);
+    
   }, []);
 
   const handleUsernameChange = (e) => {
@@ -202,6 +205,7 @@ function MainPlace() {
 
   const hangleText = (e) => {
     setTextValue(e.target.value);
+    UserIDFromMainPlace = e.target.value;
   };
 
   const hangleSubmit = (e) => {
