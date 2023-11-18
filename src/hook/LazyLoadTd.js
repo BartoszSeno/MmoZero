@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-function LazyLoadTd({ width, height, test }) {
+function LazyLoadTd({ width, height, test, src }) {
   const [isVisible, setIsVisible] = useState(false);
   const tdRef = useRef(null);
 
@@ -36,6 +36,7 @@ function LazyLoadTd({ width, height, test }) {
         opacity: isVisible ? 1 : 0,
         transition: "opacity 0.5s ease-in-out",
         backgroundColor: "red",
+        backgroundImage: `url("${src}")`,
         height: height,
         width: width,
       }}
