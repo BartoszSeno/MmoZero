@@ -8,6 +8,7 @@ function LazyLoadTd({ width, height, test, src }) {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          console.log("entry.isIntersecting:", entry.isIntersecting);
           if (entry.isIntersecting) {
             setIsVisible(true);
           } else {
@@ -28,12 +29,12 @@ function LazyLoadTd({ width, height, test, src }) {
       }
     };
   }, []);
-
   return (
     <td
       ref={tdRef}
       style={{
         opacity: isVisible ? 1 : 0,
+        visibility: isVisible ? "visible" : "hidden",
         transition: "opacity 0.5s ease-in-out",
         backgroundColor: "red",
         backgroundImage: `url("${src}")`,
