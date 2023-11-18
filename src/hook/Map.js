@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import LazyLoadTd from "./LazyLoadTd";
 
 function MainMap({ children }) {
   const [RowOne, setRowOne] = useState([
@@ -39,46 +40,33 @@ function MainMap({ children }) {
       <table>
         <tbody>
           <tr>
-            {RowOne.map((RowOne, index) => (
-              <td
+            {RowOne.map((row, index) => (
+              <LazyLoadTd
                 key={index}
-                style={{
-                  overflow: "inherit",
-                  backgroundColor: "red",
-                  height: RowOne.height,
-                  width: RowOne.width,
-                }}
-              >
-                {RowOne.test}
-              </td>
+                width={row.width}
+                height={row.height}
+                test={row.test}
+              />
             ))}
           </tr>
           <tr>
             {RowTwo.map((RowTwo, index) => (
-              <td
+              <LazyLoadTd
                 key={index}
-                style={{
-                  backgroundColor: "yellow",
-                  height: RowTwo.height,
-                  width: RowTwo.width,
-                }}
-              >
-                {RowTwo.test}
-              </td>
+                width={RowTwo.width}
+                height={RowTwo.height}
+                test={RowTwo.test}
+              />
             ))}
           </tr>
           <tr>
             {RowThree.map((RowThree, index) => (
-              <td
+              <LazyLoadTd
                 key={index}
-                style={{
-                  backgroundColor: "pink",
-                  height: RowThree.height,
-                  width: RowThree.width,
-                }}
-              >
-                {RowThree.test}
-              </td>
+                width={RowThree.width}
+                height={RowThree.height}
+                test={RowThree.test}
+              />
             ))}
           </tr>
         </tbody>
