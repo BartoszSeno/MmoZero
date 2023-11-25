@@ -26,8 +26,19 @@ function MainPlace() {
 
   //================================================================
   const [wallsN, setwallsN] = useState([
-    { x: 100, y: 100, width: 50, height: 200 },
+    //R1T1
+    { x: 0, y: 0, width: 70, height: 2000 },
+    { x: 70, y: 0, width: 100, height: 680 },
+    { x: 170, y: 0, width: 90, height: 300 },
+    { x: 260, y: 0, width: 490, height: 210 },
+    { x: 750, y: 0, width: 650, height: 110 },
+    { x: 1390, y: 0, width: 610, height: 210 },
+    { x: 1575, y: 0, width: 320, height: 400 },
+    { x: 1890, y: 0, width: 100, height: 300 },
+
     // Dodaj więcej ścian według potrzeb
+
+    ,
   ]);
   //================================================================
 
@@ -42,7 +53,6 @@ function MainPlace() {
   useEffect(() => {
     const newUserID = getUniqueID(); // Wygeneruj nowy unikalny identyfikator UUID
     setUserID(newUserID);
-    
   }, []);
 
   const handleUsernameChange = (e) => {
@@ -214,27 +224,29 @@ function MainPlace() {
   };
   return (
     <>
+      {/*
       {isLoggin ? (
-        <>
-          <div>
-            <form onSubmit={hangleSubmit}>
-              <label>
-                Wprowadź coś:
-                <input type="text" value={textValue} onChange={hangleText} />
-              </label>
-              <button type="submit">Wyślij</button>
-            </form>
-          </div>
-        </>
-      ) : (
-        <>
-          <MovingDiv
-            usernames={usernames}
-            textValue={textValue}
-            wallsN={wallsN}
-          />
-        </>
-      )}
+      <>
+        <div>
+          <form onSubmit={hangleSubmit}>
+            <label>
+              Wprowadź coś:
+              <input type="text" value={textValue} onChange={hangleText} />
+            </label>
+            <button type="submit">Wyślij</button>
+          </form>
+        </div>
+      </>
+        ) : (
+       */}
+      <>
+        <MovingDiv
+          usernames={usernames}
+          textValue={textValue}
+          wallsN={wallsN}
+        />
+      </>
+      {/* )}*/}
     </>
   );
 }

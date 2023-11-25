@@ -78,9 +78,12 @@ function App() {
     };
 
     window.addEventListener("keydown", handleKeyPress);
+    window.addEventListener("keyup", handleKeyPress);
+    window.requestAnimationFrame(handleKeyPress);
 
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
+      window.removeEventListener("keyup", handleKeyPress);
     };
   }, [usernames, UserIDFromMainPlace]);
 

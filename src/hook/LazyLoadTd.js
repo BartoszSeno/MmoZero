@@ -36,7 +36,6 @@ function LazyLoadTd({ width, height, test, src }) {
         opacity: isVisible ? 1 : 0,
         visibility: isVisible ? "visible" : "hidden",
         transition: "opacity 0.5s ease-in-out",
-        backgroundColor: "red",
         backgroundImage: `url("${src}")`,
         height: height,
         width: width,
